@@ -1,0 +1,653 @@
+<div class="toggle-container">
+    <h2 class="toggle-title">
+     AWS Notes
+        <span class="toggle-icon">▼</span>
+     </h2>
+        <div class="toggle-content">
+            <p>January 1, 2025</p>
+     <ul>
+         <li>
+             <strong>what is the difference between AMI template and snapshot and use case of each</strong>
+             <ul>
+                 <li>In AWS, <strong>AMI (Amazon Machine Image)</strong> and <strong>Snapshot</strong> are related to managing and backing up instances, but they serve different purposes and have distinct characteristics. Here’s a breakdown of the differences and the use cases for each:</li>
+                 <li>
+                     <strong>1. Amazon Machine Image (AMI)</strong>
+                     <ul>
+                         <li>
+                             <strong>What is an AMI?</strong>
+                             <ul>
+                                 <li>
+                                     <strong>AMI</strong> is a <strong>template</strong> that contains the software configuration (OS, application server, applications, etc.) needed to launch an <strong>EC2 instance</strong>.
+                                 </li>
+                                 <li>It includes:
+                                     <ul>
+                                         <li>A root volume template for the instance (usually an EBS snapshot).</li>
+                                         <li>Launch permissions that control which AWS accounts can use the AMI.</li>
+                                         <li>Block device mapping to specify the volumes to attach when the instance is launched.</li>
+                                     </ul>
+                                 </li>
+                             </ul>
+                         </li>
+                         <li>
+                             <strong>Use Cases of AMI:</strong>
+                             <ul>
+                                 <li>
+                                     <strong>Launching EC2 instances</strong>: AMIs are primarily used to <strong>create EC2 instances</strong>. When you launch a new instance, you select an AMI as the base template for the instance’s operating system and configuration.
+                                 </li>
+                                 <li>
+                                     <strong>Standardized server environments</strong>: AMIs are useful for replicating a specific software configuration across multiple instances. For example, if you have a pre-configured server setup with a web server, database, and security settings, you can save that setup as an AMI and use it to launch consistent environments.
+                                 </li>
+                                 <li>
+                                     <strong>Scaling applications</strong>: When scaling out an application, you can quickly launch new instances using a pre-configured AMI, ensuring all new instances are identical in their setup.
+                                 </li>
+                                 <li>
+                                     <strong>AMI Marketplace</strong>: AWS Marketplace offers many pre-built AMIs (including Linux, Windows, and applications) for various use cases.
+                                 </li>
+                             </ul>
+                         </li>
+                         <li>
+                             <strong>Example:</strong>
+                             <ul>
+                                 <li>You’ve configured an EC2 instance with Ubuntu, Apache, MySQL, and specific security settings. You create an AMI to save this configuration so that the next time you launch an instance, you can use this AMI to quickly replicate the same setup without reconfiguring everything manually.</li>
+                             </ul>
+                         </li>
+                     </ul>
+                 </li>
+                 <li>
+                     <strong>2. Snapshot</strong>
+                     <ul>
+                         <li>
+                             <strong>What is a Snapshot?</strong>
+                             <ul>
+                                 <li>A <strong>snapshot</strong> is a <strong>backup of an EBS volume</strong> (Elastic Block Store) at a specific point in time. It can be used to restore data on an EBS volume or create a new EBS volume from the snapshot.</li>
+                                 <li>Snapshots capture the entire data state of the volume at the moment the snapshot is taken, but they are <strong>incremental</strong> after the first snapshot. This means that only the changes made after the last snapshot are stored, reducing storage costs.</li>
+                             </ul>
+                         </li>
+                         <li>
+                             <strong>Use Cases of Snapshots:</strong>
+                             <ul>
+                                 <li>
+                                     <strong>Backup and Restore</strong>: Snapshots are used to back up the data from an EBS volume and restore it later in case of data loss, corruption, or system failure. You can restore the snapshot to a new EBS volume and attach it to an EC2 instance.
+                                 </li>
+                                 <li>
+                                     <strong>Data migration</strong>: You can take a snapshot of an EBS volume and create new volumes in a different availability zone (or even region), allowing you to migrate data between different regions or instances.
+                                 </li>
+                                 <li>
+                                     <strong>Volume resizing</strong>: If you need to resize an EBS volume, you can take a snapshot of the original volume, create a new volume with a larger size from the snapshot, and attach it to an instance.
+                                 </li>
+                                 <li>
+                                     <strong>Creating an AMI</strong>: Snapshots are often used as part of creating an AMI. When you create an AMI, AWS automatically creates a snapshot of the root volume (and any other volumes attached to the instance) to be used as part of the AMI.
+                                 </li>
+                             </ul>
+                         </li>
+                         <li>
+                             <strong>Example:</strong>
+                             <ul>
+                                 <li>You have an EBS volume attached to an EC2 instance that stores important database files. To ensure you have backups, you take periodic snapshots of the volume. If something happens to the volume, you can restore the latest snapshot and create a new EBS volume with the same data.</li>
+                             </ul>
+                         </li>
+                     </ul>
+                 </li>
+                 <li>
+                     <strong>Key Differences Between AMI and Snapshot:</strong>
+                     <table>
+                         <thead>
+                             <tr>
+                                 <th>
+                                     <strong>Feature</strong>
+                                 </th>
+                                 <th>
+                                     <strong>AMI</strong>
+                                 </th>
+                                 <th>
+                                     <strong>Snapshot</strong>
+                                 </th>
+                             </tr>
+                         </thead>
+                         <tbody>
+                             <tr>
+                                 <td>
+                                     <strong>Purpose</strong>
+                                 </td>
+                                 <td>Used to <strong>launch EC2 instances</strong></td>
+                                 <td>Used to <strong>back up and restore EBS volumes</strong></td>
+                             </tr>
+                             <tr>
+                                 <td>
+                                     <strong>What it contains</strong>
+                                 </td>
+                                 <td>Complete <strong>instance configuration</strong> (OS, apps, etc.)</td>
+                                 <td>
+                                     <strong>Volume data</strong> (point-in-time backup of an EBS volume)
+                                 </td>
+                             </tr>
+                             <tr>
+                                 <td>
+                                     <strong>Components</strong>
+                                 </td>
+                                 <td>Includes <strong>snapshots</strong> of EBS volumes, launch permissions, block device mapping</td>
+                                 <td>Just <strong>volume data</strong>, no OS or instance config</td>
+                             </tr>
+                             <tr>
+                                 <td>
+                                     <strong>Usage</strong>
+                                 </td>
+                                 <td>Launch multiple EC2 instances with the same configuration</td>
+                                 <td>Restore a volume or create a new volume from the backup</td>
+                             </tr>
+                             <tr>
+                                 <td>
+                                     <strong>Incremental</strong>
+                                 </td>
+                                 <td>No, full configuration</td>
+                                 <td>Yes, only stores changes after the initial snapshot</td>
+                             </tr>
+                             <tr>
+                                 <td>
+                                     <strong>Use Case</strong>
+                                 </td>
+                                 <td>Replicating entire instance setups, server scaling</td>
+                                 <td>Backup, disaster recovery, data migration</td>
+                             </tr>
+                             <tr>
+                                 <td>
+                                     <strong>Example</strong>
+                                 </td>
+                                 <td>Launch 10 identical web servers</td>
+                                 <td>Recover database data after volume corruption</td>
+                             </tr>
+                         </tbody>
+                     </table>
+                 </li>
+                 <li>
+                     <strong>When to Use AMI vs Snapshot:</strong>
+                     <ul>
+                         <li>
+                             <strong>Use AMI When:</strong>
+                             <ul>
+                                 <li>You want to <strong>launch EC2 instances</strong> with the same pre-configured OS and applications.</li>
+                                 <li>You need a template for <strong>scaling</strong> instances or replicating environments.</li>
+                                 <li>You want a <strong>full system image</strong> including configuration and attached volumes.</li>
+                             </ul>
+                         </li>
+                         <li>
+                             <strong>Use Snapshot When:</strong>
+                             <ul>
+                                 <li>You need to <strong>backup EBS volumes</strong> (such as for databases, file systems, or any other important data).</li>
+                                 <li>You want to <strong>restore data</strong> after an EBS volume failure.</li>
+                                 <li>You want to <strong>resize volumes</strong> or <strong>migrate data</strong> between regions.</li>
+                             </ul>
+                         </li>
+                     </ul>
+                 </li>
+                 <li>
+                     <strong>In Summary:</strong>
+                     <ul>
+                         <li>
+                             <strong>AMI</strong> is a <strong>template for launching EC2 instances</strong> and contains OS, apps, and data volumes.
+                         </li>
+                         <li>
+                             <strong>Snapshot</strong> is a <strong>point-in-time backup of an EBS volume</strong>, used for backup, recovery, and migration.
+                         </li>
+                     </ul>
+                 </li>
+             </ul>
+         </li>
+     </ul>
+     <h2 class="toggle-title">
+         January 3, 2025 <span class="toggle-icon">▼</span>
+      </h2>
+         <div class="toggle-content">
+             
+             <ul>
+         <li>
+             <strong>what is the meaning of compute</strong>
+             <ul>
+                 <li>In computing, <strong>compute</strong> refers to the process of performing calculations or executing operations that involve data manipulation, processing, or analyzing information. This can involve a wide variety of activities, such as:</li>
+                 <li>
+                     <ol>
+                         <li>
+                             <strong>Running Algorithms</strong>: Performing mathematical or logical operations.
+                         </li>
+                         <li>
+                             <strong>Data Processing</strong>: Handling and transforming data for specific use cases, such as database queries or analysis.
+                         </li>
+                         <li>
+                             <strong>Execution of Programs</strong>: Running software applications on hardware (like CPUs, GPUs, etc.) to carry out specific tasks.
+                         </li>
+                     </ol>
+                 </li>
+                 <li>In cloud computing, <strong>compute resources</strong> typically refer to the infrastructure (such as virtual machines, containers, or serverless functions) used to run applications or workloads, performing tasks like processing requests, running calculations, or handling data processing.</li>
+                 <li>For example:
+                     <ul>
+                         <li>In a cloud environment, <strong>compute services</strong> like AWS EC2, Google Cloud Compute Engine, or Azure Virtual Machines provide the infrastructure for running applications, websites, or other services.</li>
+                     </ul>
+                 </li>
+             </ul>
+         </li>
+         <li>
+             <strong>what are edge location in aws</strong>
+             <ul>
+                 <li>In <strong>AWS</strong>, an <strong>Edge Location</strong> is a site that Amazon CloudFront uses to deliver content to end users with lower latency. Edge locations are part of the <strong>Amazon Web Services (AWS) global content delivery network (CDN)</strong>, which helps improve the speed and performance of applications by serving content closer to the users.</li>
+                 <li>
+                     <strong>Key Points about Edge Locations:</strong>
+                     <ol>
+                         <li>
+                             <strong>Content Delivery</strong>: Edge locations cache copies of static content such as images, videos, and other web assets to reduce latency and improve access times for users who are geographically distant from the main data centers.
+                         </li>
+                         <li>
+                             <strong>Global Network</strong>: AWS has many edge locations around the world. These locations are strategically placed to ensure content is delivered quickly, no matter where the users are located.
+                         </li>
+                         <li>
+                             <strong>Amazon CloudFront</strong>: Edge locations are primarily used by <strong>Amazon CloudFront</strong>, AWS’s CDN service. When a user makes a request for content (e.g., a website), the content is served from the nearest edge location, speeding up the response time.
+                         </li>
+                         <li>
+                             <strong>Other AWS Services</strong>: Edge locations are also used for other AWS services, such as AWS <strong>Lambda@Edge</strong>, which allows developers to run functions closer to users and <strong>Amazon Route 53</strong> (DNS service), which improves the global routing of network traffic.
+                         </li>
+                         <li>
+                             <strong>Caching</strong>: Static content like HTML files, images, and videos can be cached at edge locations to serve repeated requests without having to go back to the origin server, resulting in faster content delivery.
+                         </li>
+                     </ol>
+                 </li>
+                 <li>
+                     <strong>Example:</strong>
+                     <ul>
+                         <li>If you have a website with users in North America and Europe, AWS CloudFront will use edge locations in those regions to cache and serve your website’s content, reducing the time it takes for users to access the website, regardless of their location.</li>
+                     </ul>
+                 </li>
+                 <li>
+                     <strong>Benefits of Edge Locations:</strong>
+                     <ul>
+                         <li>
+                             <strong>Low Latency</strong>: By caching content closer to end-users, AWS reduces the time it takes to load resources.
+                         </li>
+                         <li>
+                             <strong>Scalability</strong>: Edge locations help handle large amounts of traffic and offload requests from the main origin servers.
+                         </li>
+                         <li>
+                             <strong>Global Reach</strong>: AWS can deliver content to users worldwide with high availability and reliability.
+                         </li>
+                     </ul>
+                 </li>
+                 <li>Edge locations are crucial for optimizing web performance, enhancing the user experience, and improving overall system scalability.</li>
+             </ul>
+         </li>
+     </ul>
+         </div>
+     
+ </div>
+ <h2 class="toggle-title">
+     January 4, 2025 <span class="toggle-icon">▼</span>
+  </h2>
+     <div class="toggle-content">
+         
+         <ul>
+             <li>
+                 <strong>how can i design and deploy a static website using HTML,CSS, JS on AWS and will that incur any cost?</strong>
+                 <ul>
+                     <li>Designing and deploying a static website on AWS is relatively straightforward and cost-effective, particularly when you use services like <strong>Amazon S3</strong> (Simple Storage Service) to host the website. A static website generally consists of files like HTML, CSS, JavaScript, and media assets (images, videos, etc.).</li>
+                     <li>Here’s a step-by-step guide to designing and deploying a static website using <strong>Amazon S3</strong>, along with the associated costs:</li>
+                     <li>
+                         <strong>Step 1: Design Your Website</strong>
+                         <ul>
+                             <li>Before deploying, you should have your website files ready (HTML, CSS, JS, images, etc.).</li>
+                             <li>
+                                 <ol>
+                                     <li>
+                                         <strong>HTML (Hypertext Markup Language)</strong>: Structure of your website.
+                                     </li>
+                                     <li>
+                                         <strong>CSS (Cascading Style Sheets)</strong>: Styling for your website to make it visually appealing.
+                                     </li>
+                                     <li>
+                                         <strong>JavaScript (JS)</strong>: Any interactivity (e.g., form validation, dynamic content) you want to add.
+                                     </li>
+                                     <li>
+                                         <strong>Media Assets</strong>: Images, icons, fonts, etc.
+                                     </li>
+                                 </ol>
+                             </li>
+                             <li>Once you have all your files ready, you can proceed to AWS for deployment.</li>
+                         </ul>
+                     </li>
+                     <li>
+                         <strong>Step 2: Create an S3 Bucket for Hosting</strong>
+                         <ol>
+                             <li>
+                                 <strong>Sign in to the AWS Management Console</strong> and navigate to <strong>Amazon S3</strong>.
+                             </li>
+                             <li>
+                                 <strong>Create an S3 Bucket</strong>:
+                                 <ul>
+                                     <li>Click on “Create Bucket.”</li>
+                                     <li>Choose a bucket name (this should be unique across AWS, e.g., my-website-bucket) and select the region closest to your target audience.</li>
+                                     <li>Uncheck the “Block all public access” option to make your website accessible to the public.</li>
+                                     <li>Enable “Bucket Versioning” if you want to keep versions of your files (optional).</li>
+                                 </ul>
+                             </li>
+                             <li>
+                                 <strong>Upload Your Website Files</strong>:
+                                 <ul>
+                                     <li>After creating the bucket, upload all your HTML, CSS, JS, and other assets.</li>
+                                     <li>Create folders for assets (like css, js, images) for better organization if needed.</li>
+                                 </ul>
+                             </li>
+                             <li>
+                                 <strong>Enable Static Website Hosting</strong>:
+                                 <ul>
+                                     <li>Go to the <strong>Properties</strong> tab of your S3 bucket.</li>
+                                     <li>Scroll down to <strong>Static website hosting</strong> and click “Edit.”</li>
+                                     <li>Select “Use this bucket to host a website.”</li>
+                                     <li>Specify your <strong>index document</strong> (e.g., index.html) and an optional <strong>error document</strong> (e.g., error.html).</li>
+                                     <li>Save changes.</li>
+                                 </ul>
+                             </li>
+                             <li>
+                                 <strong>Make Your Files Public</strong>:
+                                 <ul>
+                                     <li>Go to the <strong>Permissions</strong> tab of your bucket.</li>
+                                     <li>Click on <strong>Bucket Policy</strong> and add a policy to make your files publicly accessible:
+                                         <pre><code class="language-json">{
+ 
+ "Version": "2012-10-17",
+ 
+ "Statement": [
+ 
+     {
+ 
+         "Sid": "PublicReadGetObject",
+ 
+         "Effect": "Allow",
+ 
+         "Principal": "*",
+ 
+         "Action": "s3:GetObject",
+ 
+         "Resource": "arn:aws:s3:::your-bucket-name/*"
+ 
+     }
+ 
+ ]
+ 
+}</code></pre>
+                                     </li>
+                                     <li>Replace your-bucket-name with the actual name of your S3 bucket.</li>
+                                 </ul>
+                             </li>
+                         </ol>
+                     </li>
+                     <li>
+                         <strong>Step 3: Optional Setup - Use a Custom Domain with Amazon Route 53</strong>
+                         <ul>
+                             <li>If you want to use a custom domain for your website, follow these additional steps:</li>
+                             <li>
+                                 <ol>
+                                     <li>
+                                         <strong>Purchase a Domain</strong> (if you don’t already have one):
+                                         <ul>
+                                             <li>You can buy one through Amazon Route 53 or another domain registrar.</li>
+                                         </ul>
+                                     </li>
+                                     <li>
+                                         <strong>Configure Route 53</strong>:
+                                         <ul>
+                                             <li>In <strong>Amazon Route 53</strong>, create a <strong>Hosted Zone</strong> for your domain.</li>
+                                             <li>Add a <strong>CNAME record</strong> or <strong>Alias</strong> to point your domain to your S3 bucket’s static website endpoint (you can find this in the <strong>Static Website Hosting</strong> section of your S3 bucket properties).</li>
+                                         </ul>
+                                     </li>
+                                     <li>
+                                         <strong>Enable HTTPS (Optional but recommended)</strong>:
+                                         <ul>
+                                             <li>To secure your website with HTTPS, use <strong>AWS Certificate Manager (ACM)</strong> to provision an SSL/TLS certificate for your domain.</li>
+                                             <li>Use <strong>Amazon CloudFront</strong> (a CDN service) to distribute your website content and enable SSL, which is necessary for HTTPS.</li>
+                                         </ul>
+                                     </li>
+                                 </ol>
+                             </li>
+                         </ul>
+                     </li>
+                     <li>
+                         <strong>Step 4: Test and Access Your Website</strong>
+                         <ul>
+                             <li>Once everything is set up, you can access your website via the S3 bucket URL or your custom domain (if configured). The URL format for the S3 bucket looks like this:</li>
+                             <li>
+                                 <pre><code class="language-text">http://your-bucket-name.s3-website-<region>.amazonaws.com
+</code></pre>
+                             </li>
+                             <li>For example, if your bucket is in the us-east-1 region, the URL will be:</li>
+                             <li>
+                                 <pre><code class="language-text">http://my-website-bucket.s3-website-us-east-1.amazonaws.com
+</code></pre>
+                             </li>
+                         </ul>
+                     </li>
+                     <li>
+                         <strong>Step 5: Optional Optimizations</strong>
+                         <ul>
+                             <li>
+                                 <ol>
+                                     <li>
+                                         <strong>Use CloudFront (CDN)</strong>:
+                                         <ul>
+                                             <li>CloudFront can cache your static content (HTML, CSS, JS, images) at edge locations, improving load times for users across the globe. This is particularly useful if you have global traffic.</li>
+                                         </ul>
+                                     </li>
+                                     <li>
+                                         <strong>Set Up Automatic Deployments</strong>:
+                                         <ul>
+                                             <li>You can automate the deployment of your static website by integrating <strong>AWS CodePipeline</strong> or using third-party services like <strong>GitHub Actions</strong>.</li>
+                                         </ul>
+                                     </li>
+                                 </ol>
+                             </li>
+                         </ul>
+                     </li>
+                     <li>
+                         <strong>Costs of Hosting a Static Website on AWS</strong>
+                         <ul>
+                             <li>Amazon S3 is a cost-effective option, but there are some costs associated with hosting a website:</li>
+                             <li>
+                                 <strong>1. Amazon S3 Costs:</strong>
+                                 <ul>
+                                     <li>
+                                         <strong>Storage</strong>: Pricing is based on the amount of data stored in S3. For example, the first 50TB of storage typically costs around $0.023 per GB (subject to regional pricing).
+                                     </li>
+                                     <li>
+                                         <strong>Data Transfer</strong>: Data transfer out to the internet will incur charges. The first 1GB per month is free, but after that, there are costs (e.g., around $0.09 per GB up to 10TB).
+                                     </li>
+                                     <li>
+                                         <strong>PUT/GET Requests</strong>: Every time you upload a file (PUT) or download it (GET), it counts as a request. The first 1000 requests are free; after that, it’s a small fee (e.g., $0.005 per 1000 requests for GET requests).
+                                     </li>
+                                 </ul>
+                             </li>
+                             <li>
+                                 <strong>2. Amazon Route 53 Costs (if using a custom domain):</strong>
+                                 <ul>
+                                     <li>Domain registration: Prices vary depending on the domain (usually $12-$15/year).</li>
+                                     <li>DNS queries: For hosted zones, you pay based on the number of DNS queries (e.g., $0.40 per million queries).</li>
+                                 </ul>
+                             </li>
+                             <li>
+                                 <strong>3. Amazon CloudFront (if used):</strong>
+                                 <ul>
+                                     <li>Data Transfer: You are charged based on data transfer out from CloudFront to the internet.</li>
+                                     <li>HTTPS: There are no additional charges for HTTPS with CloudFront, but there may be data transfer costs.</li>
+                                 </ul>
+                             </li>
+                         </ul>
+                     </li>
+                     <li>
+                         <strong>Free Tier Eligibility:</strong>
+                         <ul>
+                             <li>If you are within the AWS Free Tier (for new customers), you get:</li>
+                             <li>
+                                 <ul>
+                                     <li>5GB of standard S3 storage for free each month for the first 12 months.</li>
+                                     <li>20,000 GET requests and 2,000 PUT requests per month for free.</li>
+                                     <li>50GB of outbound data transfer per month with CloudFront.</li>
+                                 </ul>
+                             </li>
+                         </ul>
+                     </li>
+                     <li>
+                         <strong>Conclusion</strong>
+                         <ul>
+                             <li>For small, static websites, AWS S3 is highly cost-effective. Your primary costs will be based on the amount of storage you use, data transfer, and any additional services like Route 53 or CloudFront. If you stick to the free tier, your costs could be minimal or even zero during the initial period.</li>
+                         </ul>
+                     </li>
+                 </ul>
+             </li>
+             <li>
+               <strong>provide example of hybrid deployment</strong>
+               <ul>
+                   <li>A <strong>hybrid deployment</strong> refers to a system that integrates both on-premises infrastructure (like servers and storage in your own data center) with public or private cloud environments, creating a single unified system. This deployment model is often used to leverage the scalability and flexibility of the cloud while maintaining control over critical workloads or sensitive data in an on-premises data center.</li>
+                   <li>Here’s an <strong>example of a hybrid deployment</strong>:</li>
+                   <li>
+                       <strong>Scenario: A Financial Company with Sensitive Data</strong>
+                       <ul>
+                           <li>A financial services company operates an online banking system that handles a significant amount of sensitive financial and personal data. Due to strict regulatory compliance and security concerns, they cannot move their sensitive customer data to a public cloud provider entirely, but they still want to benefit from the cloud’s scalability for non-sensitive operations.</li>
+                       </ul>
+                   </li>
+                   <li>
+                       <strong>Hybrid Deployment Setup:</strong>
+                       <ul>
+                           <li>
+                               <strong>1. On-Premises Data Center (Private Infrastructure):</strong>
+                               <ul>
+                                   <li>The company maintains an <strong>on-premises data center</strong> for its core banking application that handles customer accounts, sensitive transactions, and compliance-critical workloads.</li>
+                                   <li>
+                                       <strong>Sensitive customer data</strong> is stored in an on-premises database for regulatory reasons, ensuring that it never leaves the secure environment of the data center.
+                                   </li>
+                                   <li>Security and compliance teams monitor and control the data access in real time.</li>
+                               </ul>
+                           </li>
+                           <li>
+                               <strong>2. Public Cloud (AWS):</strong>
+                               <ul>
+                                   <li>The company uses <strong>Amazon Web Services (AWS)</strong> for handling less-sensitive workloads. This includes running various non-critical applications, such as:
+                                       <ul>
+                                           <li>
+                                               <strong>Customer analytics</strong>: Non-sensitive behavioral data is processed in AWS to analyze customer preferences and improve user experience.
+                                           </li>
+                                           <li>
+                                               <strong>Marketing campaigns</strong>: AWS resources are used to run A/B tests and deploy online advertising platforms for customer acquisition.
+                                           </li>
+                                           <li>
+                                               <strong>Web servers and front-end</strong>: The front-end web application (UI/UX) that customers interact with is hosted in AWS Elastic Beanstalk, benefiting from its auto-scaling capabilities to handle variable traffic loads.
+                                           </li>
+                                       </ul>
+                                   </li>
+                               </ul>
+                           </li>
+                           <li>
+                               <strong>3. Integration Between On-Premises and Cloud:</strong>
+                               <ul>
+                                   <li>The <strong>on-premises banking system</strong> communicates securely with the AWS cloud environment via a <strong>Virtual Private Network (VPN)</strong> or <strong>AWS Direct Connect</strong> to provide a seamless user experience.</li>
+                                   <li>
+                                       <strong>Data replication</strong>: Non-sensitive transactional data, such as anonymized user interactions, is replicated to AWS databases (like <strong>Amazon RDS</strong> or <strong>Amazon Aurora</strong>) for real-time processing, reporting, and analytics.
+                                   </li>
+                                   <li>The company uses <strong>AWS Lambda</strong> (serverless compute) to automatically process logs from the on-premises system, ensuring that logs are stored and analyzed in the cloud without involving sensitive information.</li>
+                                   <li>
+                                       <strong>Data backup and disaster recovery</strong>: Critical data is regularly backed up from the on-premises infrastructure to <strong>Amazon S3</strong> for disaster recovery purposes. This is encrypted, and any recovery of data must adhere to compliance rules.
+                                   </li>
+                               </ul>
+                           </li>
+                           <li>
+                               <strong>4. Workload Segmentation:</strong>
+                               <ul>
+                                   <li>
+                                       <strong>Sensitive workloads</strong> (financial transactions, customer details) are handled and processed in the on-premises data center.
+                                   </li>
+                                   <li>
+                                       <strong>Non-sensitive workloads</strong> (analytics, customer behavior tracking, web hosting) are processed in the AWS cloud, which allows the company to take advantage of scalable cloud infrastructure while offloading less critical functions.
+                                   </li>
+                               </ul>
+                           </li>
+                       </ul>
+                   </li>
+                   <li>
+                       <strong>Benefits of the Hybrid Deployment:</strong>
+                       <ul>
+                           <li>
+                               <strong>Data Control & Compliance</strong>: Sensitive customer data remains in the on-premises data center, ensuring compliance with data protection regulations.
+                           </li>
+                           <li>
+                               <strong>Scalability & Flexibility</strong>: AWS resources are used to handle peak traffic (e.g., during marketing campaigns or customer inquiries), scaling up when needed without additional investment in physical hardware.
+                           </li>
+                           <li>
+                               <strong>Cost Efficiency</strong>: The company saves costs by offloading non-sensitive, high-traffic workloads (like front-end hosting and analytics) to the cloud while maintaining core data and critical operations on-premises.
+                           </li>
+                           <li>
+                               <strong>Disaster Recovery</strong>: By leveraging AWS for backups and disaster recovery, the company can quickly restore operations in the event of a system failure.
+                           </li>
+                       </ul>
+                   </li>
+                   <li>
+                       <strong>Example Architecture Diagram:</strong>
+                       <pre><code class="language-text">
+     **On-Premises Data Center**
+
+ •	Sensitive Data (e.g., Customer Account Database)
+
+ •	Core Banking Application (e.g., Transaction Processing)
+
+ •	Security Monitoring
+
+ ↔ **AWS Cloud (Public Cloud)**
+
+ •	Web Application (e.g., Front-End, API Gateway)
+
+ •	Analytics (e.g., Customer Behavior, AWS Lambda, Amazon RDS)
+
+ •	Disaster Recovery (e.g., Backup in Amazon S3)
+     </code></pre>
+                   </li>
+                   <li>
+                       <strong>Technologies Used:</strong>
+                       <ol>
+                           <li>
+                               <strong>On-Premises Infrastructure</strong>:
+                               <ul>
+                                   <li>Private servers</li>
+                                   <li>Private databases (e.g., SQL Server, Oracle DB)</li>
+                                   <li>Security appliances for monitoring and compliance</li>
+                               </ul>
+                           </li>
+                           <li>
+                               <strong>AWS Cloud Infrastructure</strong>:
+                               <ul>
+                                   <li>
+                                       <strong>Amazon Elastic Beanstalk</strong>: Hosts the website’s front-end with auto-scaling capabilities.
+                                   </li>
+                                   <li>
+                                       <strong>Amazon S3</strong>: For backup and archival of non-sensitive data, disaster recovery.
+                                   </li>
+                                   <li>
+                                       <strong>AWS Lambda</strong>: For serverless data processing.
+                                   </li>
+                                   <li>
+                                       <strong>Amazon RDS/Aurora</strong>: For non-sensitive, cloud-hosted databases for analytics and other applications.
+                                   </li>
+                                   <li>
+                                       <strong>AWS Direct Connect</strong>: Provides secure, high-bandwidth communication between the on-premises data center and AWS.
+                                   </li>
+                                   <li>
+                                       <strong>Amazon CloudFront</strong>: A Content Delivery Network (CDN) to distribute the website’s content globally, providing faster load times for users.
+                                   </li>
+                               </ul>
+                           </li>
+                       </ol>
+                   </li>
+                   <li>
+                       <strong>Conclusion:</strong>
+                       <ul>
+                           <li>This hybrid deployment allows the financial company to maintain control over sensitive data while leveraging the cloud for scalability, flexibility, and cost savings. This is a common pattern for businesses that need to balance strict data governance requirements with the benefits of cloud technologies.</li>
+                       </ul>
+                   </li>
+               </ul>
+             </li>
+             
+         </ul>
+     </div>
+ 
+ 
