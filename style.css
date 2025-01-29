@@ -1,0 +1,30 @@
+.toggle-container {
+     margin-bottom: 10px; /* Space between toggle items */
+     border: 1px solid #ccc;
+     border-radius: 5px;
+     overflow: hidden; /* Hide content that overflows during animation*/
+ }
+.toggle-title {
+     background-color: #f0f0f0;
+     padding: 10px;
+     cursor: pointer;
+    display: flex; /* Use flexbox for layout */
+     justify-content: space-between; /* Space out content */
+ }
+ 
+ .toggle-icon {
+     transition: transform 0.2s ease;
+     font-size: 1.2em;
+ }
+ 
+ .toggle-title.active .toggle-icon {
+   transform: rotate(180deg);
+ }
+
+ .toggle-content {
+     padding: 10px;
+     display: none; /* Hide initial content*/
+ }
+ .toggle-content.active {
+       display: block;
+   }
